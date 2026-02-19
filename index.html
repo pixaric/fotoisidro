@@ -253,8 +253,7 @@
 
     <script>
         // --- CONFIGURACIÓN DRIVE ---
-        // Asegúrate de que esta URL sea la de la "Implementación" (Deployment), no la del editor.
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwBEcwwFuY9tTFoy0g3bZBEoNhCvSdZyKzIlc588PJpBU4TIYcdfUFYz-eP1cTFVwLw/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyWr4sm0N0TvE9j1b4hPgsC2enSiNhH-WOcKr0OSOTya_348mZEcKhAh9MpUk85TGKR/exec";
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -319,7 +318,7 @@
                         reader.onload = (e) => resolve({
                             name: file.name,
                             type: file.type,
-                            data: e.target.result // Base64 completo
+                            data: e.target.result 
                         });
                         reader.onerror = reject;
                         reader.readAsDataURL(file);
@@ -333,19 +332,17 @@
                     telefono: document.getElementById('customerPhone').value,
                     direccion: document.getElementById('customerAddress').value,
                     servicio: summaryService.innerText,
+                    precio: totalPrice.innerText, // Enviamos el precio total
                     archivos: archivosData
                 };
 
-                // Uso de XMLHttpRequest para mayor compatibilidad con Google Scripts (evita 403 en algunos casos)
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", WEB_APP_URL, true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 
                 xhr.onreadystatechange = function() {
-                    // Como es mode no-cors (emulado), no siempre veremos el 200, 
-                    // pero si la carpeta se crea, es que ha llegado.
                     if (xhr.readyState === 4) {
-                        alert("¡Pedido enviado! Si los archivos son muchos, pueden tardar un minuto en aparecer en Drive.");
+                        alert("¡Pedido enviado con éxito! Los datos y archivos se han guardado en nuestro sistema.");
                         orderForm.reset();
                         selectedFiles = [];
                         updateUI();
@@ -354,7 +351,6 @@
                     }
                 };
 
-                // Enviamos los datos como un string de texto plano que el script parseará
                 xhr.send(JSON.stringify(payload));
 
             } catch (err) {
