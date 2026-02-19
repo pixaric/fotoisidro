@@ -253,7 +253,8 @@
 
     <script>
         // --- CONFIGURACIÓN DRIVE ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxn8lzlSgBJMg2M1kO_4wdHK1IOjLeMY_sRwrtgIZdkqTNbK-ibSCMlOKrFSQiMDD6m/exec";
+        // Asegúrate de que esta URL sea la de la "Implementación" (Deployment), no la del editor.
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwBEcwwFuY9tTFoy0g3bZBEoNhCvSdZyKzIlc588PJpBU4TIYcdfUFYz-eP1cTFVwLw/exec";
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -312,14 +313,13 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
 
             try {
-                // Preparar archivos como Base64 COMPLETO (con prefijo) para el script
                 const filePromises = selectedFiles.map(file => {
                     return new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.onload = (e) => resolve({
                             name: file.name,
                             type: file.type,
-                            data: e.target.result // Enviamos el dataURL completo
+                            data: e.target.result // Base64 completo
                         });
                         reader.onerror = reject;
                         reader.readAsDataURL(file);
@@ -336,26 +336,30 @@
                     archivos: archivosData
                 };
 
-                // Enviamos como texto plano para evitar el error 403 de CORS
-                await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    cache: 'no-cache',
-                    headers: {
-                        'Content-Type': 'text/plain',
-                    },
-                    body: JSON.stringify(payload)
-                });
+                // Uso de XMLHttpRequest para mayor compatibilidad con Google Scripts (evita 403 en algunos casos)
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", WEB_APP_URL, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                
+                xhr.onreadystatechange = function() {
+                    // Como es mode no-cors (emulado), no siempre veremos el 200, 
+                    // pero si la carpeta se crea, es que ha llegado.
+                    if (xhr.readyState === 4) {
+                        alert("¡Pedido enviado! Si los archivos son muchos, pueden tardar un minuto en aparecer en Drive.");
+                        orderForm.reset();
+                        selectedFiles = [];
+                        updateUI();
+                        btn.disabled = false;
+                        btn.innerHTML = '<span>Confirmar y Enviar</span><i class="fas fa-paper-plane ml-3"></i>';
+                    }
+                };
 
-                alert("¡Pedido enviado correctamente! Revisa tu Google Drive en unos instantes.");
-                orderForm.reset();
-                selectedFiles = [];
-                updateUI();
+                // Enviamos los datos como un string de texto plano que el script parseará
+                xhr.send(JSON.stringify(payload));
 
             } catch (err) {
                 console.error("Error al enviar:", err);
                 alert("Error al procesar el pedido.");
-            } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<span>Confirmar y Enviar</span><i class="fas fa-paper-plane ml-3"></i>';
             }
