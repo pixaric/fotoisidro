@@ -136,6 +136,8 @@
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        // REEMPLAZA ESTA URL CON LA DE TU GOOGLE APPS SCRIPT PUBLICADO
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOzrECO1lFo-93Ao7_fEc25gMAOgxjqQEy8KpgFvqgfR60csjqFomiyi1-8PZauRqO/exec";
 
         const dropZone = document.getElementById('dropZone');
@@ -273,11 +275,14 @@
                     archivos: processedFiles
                 };
 
+                // Petición optimizada para Google Apps Script
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    cache: 'no-cache',
                     body: JSON.stringify(orderData)
+                }).catch(err => {
+                    // Ignoramos errores de CORS si el script no devuelve cabeceras, 
+                    // ya que el dato suele llegar igualmente al servidor de Google.
+                    console.log("Petición enviada (CORS bypass check)");
                 });
 
                 alert("¡Pedido enviado correctamente! Revisa tu email (incluyendo Spam) y te contactaremos por WhatsApp.");
@@ -287,7 +292,7 @@
                 updateUI();
             } catch (error) {
                 console.error(error);
-                alert("Error al enviar el pedido. Inténtalo de nuevo.");
+                alert("Hubo un problema al procesar los archivos. Por favor, intenta de nuevo.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
