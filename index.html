@@ -253,7 +253,7 @@
 
     <script>
         // --- CONFIGURACIÓN DRIVE ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBoMRSfR3_q7L00kheQ4m7h-6a19SeKc6hYRBWlE8NHb5aZuC_JcEdQgHOrwyyRai2/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxn8lzlSgBJMg2M1kO_4wdHK1IOjLeMY_sRwrtgIZdkqTNbK-ibSCMlOKrFSQiMDD6m/exec";
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -312,14 +312,14 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
 
             try {
-                // Preparar archivos como Base64
+                // Preparar archivos como Base64 COMPLETO (con prefijo) para el script
                 const filePromises = selectedFiles.map(file => {
                     return new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.onload = (e) => resolve({
                             name: file.name,
                             type: file.type,
-                            data: e.target.result.split(',')[1] // Quitamos el prefijo de dataURL
+                            data: e.target.result // Enviamos el dataURL completo
                         });
                         reader.onerror = reject;
                         reader.readAsDataURL(file);
@@ -328,8 +328,6 @@
 
                 const archivosData = await Promise.all(filePromises);
 
-                // IMPORTANTE: Google Scripts 403 suele ser por el formato del body.
-                // Usaremos una técnica de envío de formulario simple para maximizar compatibilidad.
                 const payload = {
                     nombre: document.getElementById('customerName').value,
                     telefono: document.getElementById('customerPhone').value,
@@ -338,26 +336,25 @@
                     archivos: archivosData
                 };
 
-                // Enviamos mediante fetch con modo no-cors y contenido de texto plano (para evitar pre-flight OPTIONS que causa 403)
+                // Enviamos como texto plano para evitar el error 403 de CORS
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     cache: 'no-cache',
                     headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
+                        'Content-Type': 'text/plain',
                     },
                     body: JSON.stringify(payload)
                 });
 
-                // Como es 'no-cors', no podemos leer la respuesta, pero si no hay error de red, asumimos éxito.
-                alert("¡Pedido recibido! Los archivos se están subiendo a Drive. En unos minutos aparecerán en tu carpeta 'Pedidos_FotoIsidro'.");
+                alert("¡Pedido enviado correctamente! Revisa tu Google Drive en unos instantes.");
                 orderForm.reset();
                 selectedFiles = [];
                 updateUI();
 
             } catch (err) {
                 console.error("Error al enviar:", err);
-                alert("Error de conexión. Revisa que el Script de Google esté publicado como 'Cualquiera' y configurado para ejecutarse como 'Yo'.");
+                alert("Error al procesar el pedido.");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<span>Confirmar y Enviar</span><i class="fas fa-paper-plane ml-3"></i>';
