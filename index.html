@@ -36,13 +36,16 @@
 
         .card-premium {
             background: white;
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
         }
 
         .card-premium:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .drop-zone {
@@ -89,12 +92,17 @@
         button.loading .loading-spinner { display: block; }
         button.loading .btn-content { display: none; }
 
-        input::placeholder, textarea::placeholder {
-            color: #94a3b8;
-        }
-
         .shadow-soft {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .pricing-tag {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
         }
     </style>
 </head>
@@ -133,147 +141,226 @@
     <!-- Packs Section -->
     <section id="packs" class="py-24 container mx-auto px-6">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-slate-900">Selecciona tu Pack</h2>
-            <p class="text-slate-500 mt-2">Precios transparentes diseñados para ti.</p>
+            <h2 class="text-3xl font-bold text-slate-900 uppercase tracking-tight">Nuestros Packs de Impresión</h2>
+            <p class="text-slate-500 mt-2">Selecciona la opción que mejor se adapte a tus necesidades.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <!-- Pack 1 -->
-            <div class="card-premium p-10 rounded-3xl flex flex-col items-center">
-                <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
-                    <i class="fas fa-images text-2xl"></i>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            
+            <!-- Pack 1: Fotos Estándar -->
+            <div class="card-premium p-8 rounded-[32px]">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                        <i class="fas fa-images text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-slate-900 leading-tight">Pack 20 Fotos</h3>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Tamaño 10x15cm</p>
+                    </div>
                 </div>
-                <h3 class="text-xl font-extrabold mb-1">Pack 20 Fotos</h3>
-                <p class="text-slate-400 text-sm mb-6 font-medium">Estándar 10x15cm</p>
-                <div class="flex items-baseline mb-8">
-                    <span class="text-4xl font-black">9.99</span><span class="text-lg font-bold ml-1">€</span>
+
+                <div class="mb-6">
+                    <div class="flex items-baseline">
+                        <span class="text-4xl font-black text-slate-900">9.99</span><span class="text-xl font-bold ml-1 text-slate-900">€</span>
+                    </div>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1">Precio base del pack</p>
                 </div>
-                <button onclick="selectPack('Pack 20 Fotos', 9.99, 'fotos', 20)" class="w-full py-3.5 rounded-2xl font-bold text-sm bg-slate-900 text-white hover:bg-blue-600 transition-colors">Seleccionar Pack</button>
+
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600">Papel fotográfico <b>Brillante o Mate</b></span>
+                    </li>
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600">Corrección de color automática</span>
+                    </li>
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-plus-circle text-blue-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600 font-medium italic">Extra: <b>0.29€</b> por foto adicional</span>
+                    </li>
+                </ul>
+
+                <button onclick="selectPack('Pack 20 Fotos', 9.99, 'fotos', 20)" class="w-full py-4 rounded-2xl font-bold text-sm bg-slate-900 text-white hover:bg-blue-600 transition-all shadow-lg shadow-slate-100">Configurar Pack</button>
             </div>
-            <!-- Pack Premium -->
-            <div class="card-premium p-10 rounded-3xl flex flex-col items-center relative border-blue-500 ring-4 ring-blue-50">
-                <div class="absolute -top-4 bg-blue-600 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">Recomendado</div>
-                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200">
-                    <i class="fas fa-expand text-2xl"></i>
+
+            <!-- Pack 2: Gran Formato -->
+            <div class="card-premium p-8 rounded-[32px] border-blue-200 ring-2 ring-blue-50 relative">
+                <div class="absolute -top-3 right-8 bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Más popular</div>
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                        <i class="fas fa-expand text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-slate-900 leading-tight">Pack 2 Fotos A4</h3>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Tamaño 21x29.7cm</p>
+                    </div>
                 </div>
-                <h3 class="text-xl font-extrabold mb-1">Pack 2 Fotos A4</h3>
-                <p class="text-slate-400 text-sm mb-6 font-medium">Gran Formato Premium</p>
-                <div class="flex items-baseline mb-8 text-blue-600">
-                    <span class="text-4xl font-black">8.99</span><span class="text-lg font-bold ml-1">€</span>
+
+                <div class="mb-6">
+                    <div class="flex items-baseline">
+                        <span class="text-4xl font-black text-slate-900">8.99</span><span class="text-xl font-bold ml-1 text-slate-900">€</span>
+                    </div>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1">Precio base del pack</p>
                 </div>
-                <button onclick="selectPack('Pack 2 Fotos A4', 8.99, 'gran-formato', 2)" class="w-full btn-primary text-white py-3.5 rounded-2xl font-bold text-sm">Seleccionar Pack</button>
+
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600">Ideal para <b>marcos y decoración</b></span>
+                    </li>
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600">Alta resolución 2400dpi</span>
+                    </li>
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-plus-circle text-blue-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600 font-medium italic">Extra: <b>3.89€</b> por foto adicional</span>
+                    </li>
+                </ul>
+
+                <button onclick="selectPack('Pack 2 Fotos A4', 8.99, 'gran-formato', 2)" class="w-full py-4 rounded-2xl font-bold text-sm btn-primary text-white shadow-lg shadow-blue-100">Configurar Pack</button>
             </div>
-            <!-- Pack Oficina -->
-            <div class="card-premium p-10 rounded-3xl flex flex-col items-center">
-                <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 mb-6">
-                    <i class="fas fa-file-pdf text-2xl"></i>
+
+            <!-- Pack 3: Oficina -->
+            <div class="card-premium p-8 rounded-[32px]">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600">
+                        <i class="fas fa-file-pdf text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-slate-900 leading-tight">Pack Oficina</h3>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Documentos en B/N o Color</p>
+                    </div>
                 </div>
-                <h3 class="text-xl font-extrabold mb-1">Pack Oficina</h3>
-                <p class="text-slate-400 text-sm mb-6 font-medium">Documentos & PDFs</p>
-                <div class="flex items-baseline mb-8">
-                    <span class="text-4xl font-black">4.99</span><span class="text-lg font-bold ml-1">€</span>
+
+                <div class="mb-6">
+                    <div class="flex items-baseline">
+                        <span class="text-4xl font-black text-slate-900">4.99</span><span class="text-xl font-bold ml-1 text-slate-900">€</span>
+                    </div>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1">Incluye hasta 5 páginas</p>
                 </div>
-                <button onclick="selectPack('Pack Oficina', 4.99, 'documentos', 0)" class="w-full py-3.5 rounded-2xl font-bold text-sm bg-slate-900 text-white hover:bg-blue-600 transition-colors">Seleccionar Pack</button>
+
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600">Impresión láser <b>calidad profesional</b></span>
+                    </li>
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600">Perfecto para apuntes o facturas</span>
+                    </li>
+                    <li class="flex items-start text-sm">
+                        <i class="fas fa-plus-circle text-blue-500 mt-1 mr-3"></i>
+                        <span class="text-slate-600 font-medium italic">Extra: <b>0.19€</b> por página adicional</span>
+                    </li>
+                </ul>
+
+                <button onclick="selectPack('Pack Oficina', 4.99, 'documentos', 0)" class="w-full py-4 rounded-2xl font-bold text-sm bg-slate-900 text-white hover:bg-blue-600 transition-all shadow-lg shadow-slate-100">Configurar Pack</button>
             </div>
         </div>
     </section>
 
-    <!-- Order Form Section -->
+    <!-- Formulario de Pedido -->
     <section id="ordenar" class="py-24 bg-white border-y border-slate-100">
         <div class="container mx-auto px-6 max-w-6xl">
             <div class="flex flex-col lg:flex-row gap-12">
                 
-                <!-- Left: Form -->
+                <!-- Columna Izquierda: Formulario -->
                 <div class="lg:w-2/3">
                     <div class="mb-10">
-                        <h2 class="text-3xl font-extrabold text-slate-900">Configura tu Pedido</h2>
-                        <p class="text-slate-500 mt-2">Completa los detalles para que podamos procesar tu envío.</p>
+                        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Detalles del Envío</h2>
+                        <p class="text-slate-500 mt-2">Sube tus archivos y calcularemos el total automáticamente.</p>
                     </div>
 
                     <form id="orderForm" class="space-y-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Servicio seleccionado</label>
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Pack Seleccionado</label>
                             <select id="serviceType" onchange="syncPackFromSelect();" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none transition font-semibold text-slate-700 shadow-soft">
-                                <option value="" disabled selected>Escoge un pack...</option>
-                                <option value="fotos">Fotos Digitales (10x15cm)</option>
-                                <option value="gran-formato">Fotos A4 (Gran Formato)</option>
-                                <option value="documentos">Documentos / PDFs (Pack Oficina)</option>
+                                <option value="" disabled selected>Escoge un pack de arriba...</option>
+                                <option value="fotos">Pack 20 Fotos (10x15cm)</option>
+                                <option value="gran-formato">Pack 2 Fotos A4 (Gran Formato)</option>
+                                <option value="documentos">Pack Oficina (Documentos)</option>
                             </select>
                         </div>
 
-                        <div id="dropZone" class="drop-zone disabled rounded-3xl p-10 text-center transition-all relative cursor-pointer shadow-soft">
+                        <div id="dropZone" class="drop-zone disabled rounded-[32px] p-12 text-center transition-all relative cursor-pointer shadow-soft">
                             <input type="file" id="fileInput" multiple class="hidden" disabled>
                             <div id="dropContent">
-                                <div id="lockIconContainer" class="w-16 h-16 bg-white rounded-2xl shadow-sm mx-auto flex items-center justify-center mb-4 transition-all">
+                                <div id="lockIconContainer" class="w-16 h-16 bg-white rounded-2xl shadow-sm mx-auto flex items-center justify-center mb-6 transition-all">
                                     <i class="fas fa-lock text-slate-300 text-xl" id="lockIcon"></i>
                                 </div>
-                                <p class="text-slate-600 font-bold mb-1" id="dropText">Primero selecciona un pack</p>
+                                <p class="text-slate-900 font-extrabold mb-1" id="dropText">Selecciona un pack para activar</p>
                                 <p id="allowedFormatsHint" class="text-slate-400 text-xs font-medium"></p>
                             </div>
-                            <div id="fileList" class="mt-4 text-left space-y-3 hidden max-h-60 overflow-y-auto pr-2"></div>
+                            <div id="fileList" class="mt-4 text-left space-y-3 hidden max-h-80 overflow-y-auto pr-2"></div>
                         </div>
-                        <p id="minFilesNotice" class="hidden text-amber-600 text-xs font-bold bg-amber-50 p-3 rounded-xl border border-amber-100"><i class="fas fa-info-circle mr-2"></i> <span id="minFilesText"></span></p>
+
+                        <p id="minFilesNotice" class="hidden text-amber-700 text-xs font-bold bg-amber-50 p-4 rounded-2xl border border-amber-100"><i class="fas fa-exclamation-triangle mr-2"></i> <span id="minFilesText"></span></p>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Información Personal</label>
-                                <input id="customerName" type="text" required placeholder="Nombre completo" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
-                                <input id="customerEmail" type="email" required placeholder="Correo electrónico" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
-                                <input id="customerPhone" type="tel" required placeholder="Teléfono / WhatsApp" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Contacto</label>
+                                <input id="customerName" type="text" required placeholder="Tu nombre completo" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <input id="customerEmail" type="email" required placeholder="Email de contacto" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <input id="customerPhone" type="tel" required placeholder="Móvil (WhatsApp)" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
                             </div>
                             <div class="space-y-2">
-                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Dirección de Entrega</label>
-                                <input id="customerAddress" type="text" required placeholder="Calle, portal, piso..." class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
-                                <input id="customerZip" type="text" required maxlength="5" placeholder="Código Postal (Solo 38611)" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
-                                <p id="addressError" class="hidden text-red-500 text-[10px] font-black uppercase tracking-tighter bg-red-50 p-2 rounded-lg border border-red-100">Solo repartimos en San Isidro (38611).</p>
-                                <textarea id="orderNotes" rows="2" placeholder="Observaciones adicionales..." class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none resize-none shadow-soft"></textarea>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Entrega en San Isidro</label>
+                                <input id="customerAddress" type="text" required placeholder="Calle, portal y piso" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <input id="customerZip" type="text" required maxlength="5" placeholder="Código Postal (38611)" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <p id="addressError" class="hidden text-red-500 text-[10px] font-black uppercase tracking-tighter bg-red-50 p-2 rounded-lg border border-red-100">Solo enviamos a San Isidro (38611).</p>
+                                <textarea id="orderNotes" rows="2" placeholder="Indicaciones para el repartidor..." class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none resize-none shadow-soft"></textarea>
                             </div>
                         </div>
 
-                        <button type="submit" id="submitBtn" class="w-full btn-primary text-white py-5 rounded-3xl font-black text-lg uppercase tracking-widest shadow-xl disabled-btn flex items-center justify-center space-x-3" disabled>
+                        <button type="submit" id="submitBtn" class="w-full btn-primary text-white py-5 rounded-[24px] font-black text-lg uppercase tracking-widest shadow-xl disabled-btn flex items-center justify-center space-x-3" disabled>
                             <span class="loading-spinner"></span>
-                            <span class="btn-content">Confirmar Pedido <i class="fas fa-arrow-right ml-2 text-sm opacity-50"></i></span>
+                            <span class="btn-content">Confirmar y Enviar <i class="fas fa-paper-plane ml-2 text-sm opacity-60"></i></span>
                         </button>
                     </form>
                 </div>
 
-                <!-- Right: Summary Sidebar -->
+                <!-- Columna Derecha: Resumen -->
                 <div class="lg:w-1/3">
                     <div class="sticky top-28">
-                        <div class="bg-slate-900 rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden">
-                            <!-- Decoración -->
-                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-600/20 rounded-full filter blur-2xl"></div>
+                        <div class="bg-slate-900 rounded-[40px] p-10 text-white shadow-2xl relative overflow-hidden">
+                            <div class="absolute -top-12 -right-12 w-40 h-40 bg-blue-600/20 rounded-full filter blur-3xl"></div>
                             
-                            <h3 class="text-xl font-extrabold mb-8 flex items-center">
-                                <i class="fas fa-receipt mr-3 text-blue-400"></i> Resumen
+                            <h3 class="text-xl font-extrabold mb-10 flex items-center">
+                                <i class="fas fa-shopping-cart mr-3 text-blue-400"></i> Resumen del Pedido
                             </h3>
                             
-                            <div class="space-y-6 mb-12">
+                            <div class="space-y-8 mb-12">
                                 <div class="flex flex-col">
-                                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Servicio</span>
-                                    <span id="summaryService" class="text-lg font-bold">-</span>
+                                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Pack seleccionado</span>
+                                    <span id="summaryService" class="text-lg font-bold text-blue-100">-</span>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Contenido</span>
+                                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Cantidades calculadas</span>
                                     <div class="flex items-center text-lg font-bold">
-                                        <span id="summaryFiles">0</span>&nbsp;<span class="text-slate-500 font-medium">unidades/páginas</span>
+                                        <span id="summaryFiles" class="text-white">0</span>&nbsp;<span class="text-slate-500 font-medium italic">unidades</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="pt-8 border-t border-slate-800">
-                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Total Estimado</span>
+                            <div class="pt-10 border-t border-slate-800">
+                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Precio Final Estimado</span>
                                 <div class="flex items-baseline">
-                                    <span class="text-5xl font-black" id="totalPrice">0.00</span><span class="text-2xl font-bold ml-1 text-blue-400">€</span>
+                                    <span class="text-6xl font-black" id="totalPrice">0.00</span><span class="text-2xl font-bold ml-1 text-blue-400">€</span>
                                 </div>
-                                <p id="priceInfo" class="text-[10px] text-slate-500 mt-4 font-bold uppercase tracking-tight italic">Sujeto a revisión de archivos</p>
+                                <p class="text-[10px] text-slate-500 mt-6 font-bold uppercase tracking-widest leading-relaxed">
+                                    <i class="fas fa-truck mr-2 text-blue-500"></i> Envío gratuito en San Isidro
+                                </p>
                             </div>
 
-                            <div class="mt-10 bg-white/5 rounded-2xl p-4 flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-hand-holding-usd text-white"></i>
-                                </div>
-                                <div class="text-[10px] font-bold text-slate-300 leading-tight uppercase tracking-wider">
-                                    Pago al recibir<br><span class="text-white">Bizum / Efectivo</span>
+                            <div class="mt-12 bg-white/5 rounded-3xl p-6 border border-white/5">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center">
+                                        <i class="fas fa-wallet text-blue-400"></i>
+                                    </div>
+                                    <div class="text-xs font-bold text-slate-300 leading-tight">
+                                        Paga cómodamente al repartidor por <span class="text-white font-black">Bizum o Efectivo</span>.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -285,21 +372,22 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 bg-slate-50 border-t border-slate-100">
+    <footer class="py-16 bg-slate-50 border-t border-slate-100">
         <div class="container mx-auto px-6 text-center">
-            <div class="flex items-center justify-center space-x-3 mb-6">
-                <div class="bg-slate-900 p-1.5 rounded-lg text-white">
+            <div class="flex items-center justify-center space-x-3 mb-8">
+                <div class="bg-slate-900 p-2 rounded-xl text-white shadow-lg">
                     <i class="fas fa-camera-retro"></i>
                 </div>
-                <span class="text-lg font-black text-slate-900 tracking-tight">FotoIsidro</span>
+                <span class="text-2xl font-black text-slate-900 tracking-tighter">Foto<span class="text-blue-600">Isidro</span></span>
             </div>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">© 2024 Tenerife Impresiones Express. San Isidro, 38611.</p>
+            <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">© 2024 Tenerife Impresiones Premium | San Isidro (CP 38611)</p>
         </div>
     </footer>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         
+        // Configuración de URL del Script de Google
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOzrECO1lFo-93Ao7_fEc25gMAOgxjqQEy8KpgFvqgfR60csjqFomiyi1-8PZauRqO/exec";
 
         const dropZone = document.getElementById('dropZone');
@@ -336,7 +424,7 @@
             
             lockIcon.className = "fas fa-cloud-upload-alt text-blue-600 text-xl";
             lockIconContainer.classList.add('shadow-blue-100');
-            dropText.innerText = "Sube o arrastra tus archivos aquí";
+            dropText.innerText = "Sube tus archivos aquí";
             fileInput.accept = type === 'documentos' ? ".pdf" : "image/*";
             
             updateUI();
@@ -349,7 +437,9 @@
             const files = Array.from(e.target.files);
             for (const file of files) {
                 let pages = 1;
-                if (file.type === "application/pdf") pages = await countPdfPages(file);
+                if (file.type === "application/pdf") {
+                    try { pages = await countPdfPages(file); } catch(e) { pages = 1; }
+                }
                 selectedFiles.push({ file, pages });
             }
             updateUI();
@@ -366,14 +456,16 @@
 
         function updateUI() {
             fileList.innerHTML = selectedFiles.map((item, i) => `
-                <div class="flex justify-between bg-white p-3 rounded-2xl shadow-sm border border-slate-50 text-xs items-center group">
-                    <div class="flex items-center space-x-3 truncate">
-                        <i class="fas ${item.file.type.includes('pdf') ? 'fa-file-pdf text-red-500' : 'fa-image text-blue-500'}"></i>
+                <div class="flex justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-50 text-xs items-center group">
+                    <div class="flex items-center space-x-4 truncate">
+                        <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center">
+                            <i class="fas ${item.file.type.includes('pdf') ? 'fa-file-pdf text-red-400' : 'fa-image text-blue-400'}"></i>
+                        </div>
                         <span class="truncate max-w-[140px] font-bold text-slate-700">${item.file.name}</span>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="bg-slate-100 text-slate-500 px-2 py-1 rounded-lg font-black text-[9px] uppercase tracking-tighter">${item.pages} p.</span>
-                        <button type="button" onclick="removeFile(${i})" class="w-6 h-6 flex items-center justify-center rounded-full bg-red-50 text-red-400 hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-times text-[10px]"></i></button>
+                    <div class="flex items-center space-x-4">
+                        <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-black text-[9px] uppercase tracking-tighter">${item.pages} p.</span>
+                        <button type="button" onclick="removeFile(${i})" class="w-8 h-8 flex items-center justify-center rounded-xl bg-red-50 text-red-400 hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-times text-[10px]"></i></button>
                     </div>
                 </div>
             `).join('');
@@ -404,7 +496,7 @@
             submitBtn.disabled = !(isPackSelected && selectedFiles.length > 0 && isMinMet);
             submitBtn.classList.toggle('disabled-btn', submitBtn.disabled);
             document.getElementById('minFilesNotice').classList.toggle('hidden', isMinMet || selectedFiles.length === 0);
-            document.getElementById('minFilesText').innerText = `El pack requiere al menos ${requiredMinFiles} unidades.`;
+            document.getElementById('minFilesText').innerText = `Este pack requiere un mínimo de ${requiredMinFiles} unidades (tienes ${currentCount}).`;
         }
 
         const toBase64 = file => new Promise((resolve, reject) => {
@@ -448,19 +540,23 @@
                     archivos: processedFiles
                 };
 
+                // Enviar a Google Apps Script
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify(orderData)
-                }).catch(err => console.log("CORS ignore: Data sent."));
+                }).catch(err => console.log("CORS esperado, datos probablemente enviados."));
 
-                alert("¡Pedido enviado correctamente! Revisaremos tus archivos y te contactaremos por WhatsApp.");
+                // Mensaje de éxito amigable
+                alert("¡Pedido recibido! Tu laboratorio ya se ha puesto en marcha. Te contactaremos pronto.");
                 document.getElementById('orderForm').reset();
                 selectedFiles = [];
                 isPackSelected = false;
                 updateUI();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
             } catch (error) {
                 console.error(error);
-                alert("Hubo un error al procesar tu pedido. Por favor verifica los archivos.");
+                alert("Hubo un pequeño problema. Por favor, inténtalo de nuevo.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
