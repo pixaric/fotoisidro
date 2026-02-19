@@ -3,141 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FotoIsidro - Impresión Express a Domicilio</title>
+    <title>FotoIsidro | Impresión Premium a Domicilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
-        .gradient-brand { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); }
-        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.3s ease; }
-        .drop-zone.active { border-color: #3b82f6; background-color: #eff6ff; }
-        .drop-zone.disabled { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.7; border-color: #e2e8f0; }
-        .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .disabled-btn { opacity: 0.6; cursor: not-allowed; filter: grayscale(1); }
-        .loading-spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --brand-primary: #2563eb;
+            --brand-secondary: #1d4ed8;
+            --bg-main: #fcfdfe;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-main); 
+            scroll-behavior: smooth;
+            color: #1e293b;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+        }
+
+        .card-premium {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-premium:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        .drop-zone {
+            border: 2px dashed #e2e8f0;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.active {
+            border-color: var(--brand-primary);
+            background-color: #eff6ff;
+            transform: scale(1.01);
+        }
+
+        .drop-zone.disabled {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            filter: brightness(1.1);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+
         @keyframes spin { to { transform: rotate(360deg); } }
-        button.loading .loading-spinner { display: inline-block; }
+        
+        button.loading .loading-spinner { display: block; }
         button.loading .btn-content { display: none; }
+
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        .shadow-soft {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
     </style>
 </head>
 <body>
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                <div class="gradient-brand p-2 rounded-lg text-white"><i class="fas fa-camera-retro fa-lg"></i></div>
-                <span class="text-2xl font-bold text-slate-800 tracking-tight">FotoIsidro</span>
+    <!-- Navegación -->
+    <header class="glass-nav sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-200">
+                    <i class="fas fa-camera-retro fa-lg"></i>
+                </div>
+                <span class="text-xl font-extrabold text-slate-900 tracking-tight">Foto<span class="text-blue-600">Isidro</span></span>
             </div>
-            <nav class="hidden md:flex space-x-8 text-slate-600 font-medium">
-                <a href="#packs" class="hover:text-blue-600 transition">Packs</a>
-                <a href="#ordenar" class="hover:text-blue-600 transition">Pedir ahora</a>
+            <nav class="hidden md:flex space-x-10 text-slate-500 font-semibold text-sm uppercase tracking-wider">
+                <a href="#packs" class="hover:text-blue-600 transition">Servicios</a>
+                <a href="#ordenar" class="hover:text-blue-600 transition">Nuevo Pedido</a>
             </nav>
-            <a href="#ordenar" class="gradient-brand text-white px-5 py-2 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-md shadow-blue-200">ENVÍO EXPRESS</a>
+            <a href="#ordenar" class="btn-primary text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg shadow-blue-100">Express</a>
         </div>
     </header>
 
-    <section class="relative bg-slate-900 text-white py-24 overflow-hidden">
-        <div class="container mx-auto px-4 relative z-10 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">Tus fotos impresas en <span class="text-blue-400">San Isidro</span></h1>
-            <p class="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">Impresión de alta calidad y entrega a domicilio express. Guardamos tus archivos para garantizar la máxima resolución.</p>
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-24 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">Servicio Local en Tenerife</span>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">Impresiones que <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">cobran vida.</span></h1>
+            <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto font-medium">Calidad de laboratorio fotográfico directo a tu puerta en San Isidro. Sin complicaciones, sin esperas.</p>
         </div>
     </section>
 
-    <section id="packs" class="py-16 container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-slate-800">
-            <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col transition-transform hover:-translate-y-1">
-                <h3 class="text-2xl font-bold mb-2">Pack 20 Fotos</h3>
-                <p class="text-slate-500 mb-6 italic">10x15cm (Extras +0.29€/u)</p>
-                <div class="text-4xl font-bold mb-6">9.99€</div>
-                <button onclick="selectPack('Pack 20 Fotos', 9.99, 'fotos', 20)" class="mt-auto bg-slate-100 text-slate-800 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Seleccionar</button>
+    <!-- Packs Section -->
+    <section id="packs" class="py-24 container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-slate-900">Selecciona tu Pack</h2>
+            <p class="text-slate-500 mt-2">Precios transparentes diseñados para ti.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Pack 1 -->
+            <div class="card-premium p-10 rounded-3xl flex flex-col items-center">
+                <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+                    <i class="fas fa-images text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-extrabold mb-1">Pack 20 Fotos</h3>
+                <p class="text-slate-400 text-sm mb-6 font-medium">Estándar 10x15cm</p>
+                <div class="flex items-baseline mb-8">
+                    <span class="text-4xl font-black">9.99</span><span class="text-lg font-bold ml-1">€</span>
+                </div>
+                <button onclick="selectPack('Pack 20 Fotos', 9.99, 'fotos', 20)" class="w-full py-3.5 rounded-2xl font-bold text-sm bg-slate-900 text-white hover:bg-blue-600 transition-colors">Seleccionar Pack</button>
             </div>
-            <div class="bg-white p-8 rounded-2xl card-shadow border-2 border-blue-500 text-center relative flex flex-col scale-105 z-10 shadow-2xl">
-                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Más pedido</div>
-                <h3 class="text-2xl font-bold mb-2">Pack 2 Fotos A4</h3>
-                <p class="text-slate-500 mb-6 italic">8.99€ (Extras +3.89€/u)</p>
-                <div class="text-4xl font-bold mb-6">8.99€</div>
-                <button onclick="selectPack('Pack 2 Fotos A4', 8.99, 'gran-formato', 2)" class="mt-auto gradient-brand text-white py-3 rounded-xl font-bold hover:opacity-90 transition shadow-lg">Seleccionar</button>
+            <!-- Pack Premium -->
+            <div class="card-premium p-10 rounded-3xl flex flex-col items-center relative border-blue-500 ring-4 ring-blue-50">
+                <div class="absolute -top-4 bg-blue-600 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">Recomendado</div>
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200">
+                    <i class="fas fa-expand text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-extrabold mb-1">Pack 2 Fotos A4</h3>
+                <p class="text-slate-400 text-sm mb-6 font-medium">Gran Formato Premium</p>
+                <div class="flex items-baseline mb-8 text-blue-600">
+                    <span class="text-4xl font-black">8.99</span><span class="text-lg font-bold ml-1">€</span>
+                </div>
+                <button onclick="selectPack('Pack 2 Fotos A4', 8.99, 'gran-formato', 2)" class="w-full btn-primary text-white py-3.5 rounded-2xl font-bold text-sm">Seleccionar Pack</button>
             </div>
-            <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col transition-transform hover:-translate-y-1">
-                <h3 class="text-2xl font-bold mb-2">Pack Oficina</h3>
-                <p class="text-slate-500 mb-6 italic">Documentos PDF</p>
-                <div class="text-4xl font-bold mb-6">4.99€</div>
-                <button onclick="selectPack('Pack Oficina', 4.99, 'documentos', 0)" class="mt-auto bg-slate-100 text-slate-800 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Seleccionar</button>
+            <!-- Pack Oficina -->
+            <div class="card-premium p-10 rounded-3xl flex flex-col items-center">
+                <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 mb-6">
+                    <i class="fas fa-file-pdf text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-extrabold mb-1">Pack Oficina</h3>
+                <p class="text-slate-400 text-sm mb-6 font-medium">Documentos & PDFs</p>
+                <div class="flex items-baseline mb-8">
+                    <span class="text-4xl font-black">4.99</span><span class="text-lg font-bold ml-1">€</span>
+                </div>
+                <button onclick="selectPack('Pack Oficina', 4.99, 'documentos', 0)" class="w-full py-3.5 rounded-2xl font-bold text-sm bg-slate-900 text-white hover:bg-blue-600 transition-colors">Seleccionar Pack</button>
             </div>
         </div>
     </section>
 
-    <section id="ordenar" class="py-16 bg-slate-50">
-        <div class="container mx-auto px-4 max-w-4xl">
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-                <div class="p-8 md:w-3/5">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Configura tu Pedido</h2>
-                    <form id="orderForm" class="space-y-4">
-                        <select id="serviceType" onchange="syncPackFromSelect();" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                            <option value="" disabled selected>Escoge un pack...</option>
-                            <option value="fotos">Fotos Digitales (10x15cm)</option>
-                            <option value="gran-formato">Fotos A4 (Gran Formato)</option>
-                            <option value="documentos">Documentos / PDFs (Pack Oficina)</option>
-                        </select>
+    <!-- Order Form Section -->
+    <section id="ordenar" class="py-24 bg-white border-y border-slate-100">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="flex flex-col lg:flex-row gap-12">
+                
+                <!-- Left: Form -->
+                <div class="lg:w-2/3">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-extrabold text-slate-900">Configura tu Pedido</h2>
+                        <p class="text-slate-500 mt-2">Completa los detalles para que podamos procesar tu envío.</p>
+                    </div>
 
-                        <div id="dropZone" class="drop-zone disabled rounded-2xl p-6 text-center transition relative">
+                    <form id="orderForm" class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Servicio seleccionado</label>
+                            <select id="serviceType" onchange="syncPackFromSelect();" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none transition font-semibold text-slate-700 shadow-soft">
+                                <option value="" disabled selected>Escoge un pack...</option>
+                                <option value="fotos">Fotos Digitales (10x15cm)</option>
+                                <option value="gran-formato">Fotos A4 (Gran Formato)</option>
+                                <option value="documentos">Documentos / PDFs (Pack Oficina)</option>
+                            </select>
+                        </div>
+
+                        <div id="dropZone" class="drop-zone disabled rounded-3xl p-10 text-center transition-all relative cursor-pointer shadow-soft">
                             <input type="file" id="fileInput" multiple class="hidden" disabled>
                             <div id="dropContent">
-                                <i class="fas fa-lock text-3xl text-slate-300 mb-2" id="lockIcon"></i>
-                                <p class="text-slate-400 font-medium text-sm" id="dropText">Primero selecciona un pack</p>
-                                <p id="allowedFormatsHint" class="text-slate-400 text-xs mt-1 italic"></p>
+                                <div id="lockIconContainer" class="w-16 h-16 bg-white rounded-2xl shadow-sm mx-auto flex items-center justify-center mb-4 transition-all">
+                                    <i class="fas fa-lock text-slate-300 text-xl" id="lockIcon"></i>
+                                </div>
+                                <p class="text-slate-600 font-bold mb-1" id="dropText">Primero selecciona un pack</p>
+                                <p id="allowedFormatsHint" class="text-slate-400 text-xs font-medium"></p>
                             </div>
-                            <div id="fileList" class="mt-4 text-left space-y-2 hidden max-h-48 overflow-y-auto pr-2"></div>
+                            <div id="fileList" class="mt-4 text-left space-y-3 hidden max-h-60 overflow-y-auto pr-2"></div>
                         </div>
-                        <p id="minFilesNotice" class="hidden text-amber-600 text-xs font-medium"><i class="fas fa-info-circle mr-1"></i> <span id="minFilesText"></span></p>
+                        <p id="minFilesNotice" class="hidden text-amber-600 text-xs font-bold bg-amber-50 p-3 rounded-xl border border-amber-100"><i class="fas fa-info-circle mr-2"></i> <span id="minFilesText"></span></p>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="customerName" type="text" required placeholder="Nombre completo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
-                            <input id="customerPhone" type="tel" required placeholder="WhatsApp" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Información Personal</label>
+                                <input id="customerName" type="text" required placeholder="Nombre completo" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <input id="customerEmail" type="email" required placeholder="Correo electrónico" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <input id="customerPhone" type="tel" required placeholder="Teléfono / WhatsApp" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Dirección de Entrega</label>
+                                <input id="customerAddress" type="text" required placeholder="Calle, portal, piso..." class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <input id="customerZip" type="text" required maxlength="5" placeholder="Código Postal (Solo 38611)" class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none shadow-soft">
+                                <p id="addressError" class="hidden text-red-500 text-[10px] font-black uppercase tracking-tighter bg-red-50 p-2 rounded-lg border border-red-100">Solo repartimos en San Isidro (38611).</p>
+                                <textarea id="orderNotes" rows="2" placeholder="Observaciones adicionales..." class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-500 outline-none resize-none shadow-soft"></textarea>
+                            </div>
                         </div>
-                        
-                        <input id="customerEmail" type="email" required placeholder="Correo electrónico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <input id="customerAddress" type="text" required placeholder="Dirección" class="md:col-span-2 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
-                            <input id="customerZip" type="text" required maxlength="5" placeholder="CP 38611" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
-                        <p id="addressError" class="hidden text-red-500 text-xs">Solo repartimos en San Isidro (38611).</p>
-
-                        <textarea id="orderNotes" rows="2" placeholder="Observaciones (ej: bordes, brillo...)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
-
-                        <button type="submit" id="submitBtn" class="w-full gradient-brand text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-blue-300 transition-all disabled-btn flex items-center justify-center space-x-2" disabled>
+                        <button type="submit" id="submitBtn" class="w-full btn-primary text-white py-5 rounded-3xl font-black text-lg uppercase tracking-widest shadow-xl disabled-btn flex items-center justify-center space-x-3" disabled>
                             <span class="loading-spinner"></span>
-                            <span class="btn-content">Confirmar Pedido <i class="fas fa-paper-plane ml-3"></i></span>
+                            <span class="btn-content">Confirmar Pedido <i class="fas fa-arrow-right ml-2 text-sm opacity-50"></i></span>
                         </button>
                     </form>
                 </div>
 
-                <div class="bg-blue-600 p-8 md:w-2/5 text-white flex flex-col">
-                    <div class="flex-grow">
-                        <h3 class="text-xl font-bold mb-8">Resumen</h3>
-                        <div class="space-y-4 mb-10 text-sm">
-                            <div class="flex justify-between border-b border-blue-400/30 pb-2"><span>Servicio:</span><span id="summaryService" class="font-semibold">-</span></div>
-                            <div class="flex justify-between border-b border-blue-400/30 pb-2"><span id="countLabel">Total Hojas:</span><span id="summaryFiles" class="font-semibold">0</span></div>
-                        </div>
-                        <div class="mb-8">
-                            <div class="text-blue-100 mb-1">Total Estimado</div>
-                            <div class="text-5xl font-bold" id="totalPrice">0.00€</div>
-                            <p id="priceInfo" class="text-xs text-blue-200 mt-2 italic"></p>
+                <!-- Right: Summary Sidebar -->
+                <div class="lg:w-1/3">
+                    <div class="sticky top-28">
+                        <div class="bg-slate-900 rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden">
+                            <!-- Decoración -->
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-600/20 rounded-full filter blur-2xl"></div>
+                            
+                            <h3 class="text-xl font-extrabold mb-8 flex items-center">
+                                <i class="fas fa-receipt mr-3 text-blue-400"></i> Resumen
+                            </h3>
+                            
+                            <div class="space-y-6 mb-12">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Servicio</span>
+                                    <span id="summaryService" class="text-lg font-bold">-</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Contenido</span>
+                                    <div class="flex items-center text-lg font-bold">
+                                        <span id="summaryFiles">0</span>&nbsp;<span class="text-slate-500 font-medium">unidades/páginas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-8 border-t border-slate-800">
+                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Total Estimado</span>
+                                <div class="flex items-baseline">
+                                    <span class="text-5xl font-black" id="totalPrice">0.00</span><span class="text-2xl font-bold ml-1 text-blue-400">€</span>
+                                </div>
+                                <p id="priceInfo" class="text-[10px] text-slate-500 mt-4 font-bold uppercase tracking-tight italic">Sujeto a revisión de archivos</p>
+                            </div>
+
+                            <div class="mt-10 bg-white/5 rounded-2xl p-4 flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-hand-holding-usd text-white"></i>
+                                </div>
+                                <div class="text-[10px] font-bold text-slate-300 leading-tight uppercase tracking-wider">
+                                    Pago al recibir<br><span class="text-white">Bizum / Efectivo</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-auto pt-6 border-t border-blue-500 text-xs opacity-70">Pago al recibir (Bizum, efectivo o tarjeta).</div>
                 </div>
+
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer class="py-12 bg-slate-50 border-t border-slate-100">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <div class="bg-slate-900 p-1.5 rounded-lg text-white">
+                    <i class="fas fa-camera-retro"></i>
+                </div>
+                <span class="text-lg font-black text-slate-900 tracking-tight">FotoIsidro</span>
+            </div>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">© 2024 Tenerife Impresiones Express. San Isidro, 38611.</p>
+        </div>
+    </footer>
+
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         
-        // REEMPLAZA ESTA URL CON LA DE TU GOOGLE APPS SCRIPT PUBLICADO
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOzrECO1lFo-93Ao7_fEc25gMAOgxjqQEy8KpgFvqgfR60csjqFomiyi1-8PZauRqO/exec";
 
         const dropZone = document.getElementById('dropZone');
@@ -146,10 +308,10 @@
         const summaryService = document.getElementById('summaryService');
         const summaryFiles = document.getElementById('summaryFiles');
         const totalPrice = document.getElementById('totalPrice');
-        const priceInfo = document.getElementById('priceInfo');
         const serviceType = document.getElementById('serviceType');
         const submitBtn = document.getElementById('submitBtn');
         const lockIcon = document.getElementById('lockIcon');
+        const lockIconContainer = document.getElementById('lockIconContainer');
         const dropText = document.getElementById('dropText');
 
         let selectedFiles = [];
@@ -171,9 +333,12 @@
             summaryService.innerText = name;
             dropZone.classList.remove('disabled');
             fileInput.disabled = false;
-            lockIcon.className = "fas fa-cloud-upload-alt text-3xl text-blue-400 mb-2";
-            dropText.innerText = "Arrastra o selecciona tus archivos";
+            
+            lockIcon.className = "fas fa-cloud-upload-alt text-blue-600 text-xl";
+            lockIconContainer.classList.add('shadow-blue-100');
+            dropText.innerText = "Sube o arrastra tus archivos aquí";
             fileInput.accept = type === 'documentos' ? ".pdf" : "image/*";
+            
             updateUI();
             if (scroll) document.getElementById('ordenar').scrollIntoView({ behavior: 'smooth' });
         }
@@ -201,14 +366,18 @@
 
         function updateUI() {
             fileList.innerHTML = selectedFiles.map((item, i) => `
-                <div class="flex justify-between bg-slate-50 p-2 rounded border text-xs items-center">
-                    <span class="truncate max-w-[150px] font-medium text-slate-700">${item.file.name}</span>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-blue-100 text-blue-600 px-2 py-0.5 rounded font-bold">${item.pages} p.</span>
-                        <button type="button" onclick="removeFile(${i})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                <div class="flex justify-between bg-white p-3 rounded-2xl shadow-sm border border-slate-50 text-xs items-center group">
+                    <div class="flex items-center space-x-3 truncate">
+                        <i class="fas ${item.file.type.includes('pdf') ? 'fa-file-pdf text-red-500' : 'fa-image text-blue-500'}"></i>
+                        <span class="truncate max-w-[140px] font-bold text-slate-700">${item.file.name}</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="bg-slate-100 text-slate-500 px-2 py-1 rounded-lg font-black text-[9px] uppercase tracking-tighter">${item.pages} p.</span>
+                        <button type="button" onclick="removeFile(${i})" class="w-6 h-6 flex items-center justify-center rounded-full bg-red-50 text-red-400 hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-times text-[10px]"></i></button>
                     </div>
                 </div>
             `).join('');
+            
             fileList.classList.toggle('hidden', selectedFiles.length === 0);
             document.getElementById('dropContent').classList.toggle('hidden', selectedFiles.length > 0);
             
@@ -229,13 +398,13 @@
             }
 
             summaryFiles.innerText = currentCount;
-            totalPrice.innerText = total.toFixed(2) + "€";
+            totalPrice.innerText = total.toFixed(2);
             
             const isMinMet = requiredMinFiles === 0 || currentCount >= requiredMinFiles;
             submitBtn.disabled = !(isPackSelected && selectedFiles.length > 0 && isMinMet);
             submitBtn.classList.toggle('disabled-btn', submitBtn.disabled);
             document.getElementById('minFilesNotice').classList.toggle('hidden', isMinMet || selectedFiles.length === 0);
-            document.getElementById('minFilesText').innerText = `Mínimo ${requiredMinFiles} unidades requeridas.`;
+            document.getElementById('minFilesText').innerText = `El pack requiere al menos ${requiredMinFiles} unidades.`;
         }
 
         const toBase64 = file => new Promise((resolve, reject) => {
@@ -248,7 +417,11 @@
         document.getElementById('orderForm').onsubmit = async (e) => {
             e.preventDefault();
             const zip = document.getElementById('customerZip').value;
-            if (zip !== "38611") { document.getElementById('addressError').classList.remove('hidden'); return; }
+            if (zip !== "38611") { 
+                document.getElementById('addressError').classList.remove('hidden'); 
+                document.getElementById('customerZip').focus();
+                return; 
+            }
 
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
@@ -270,29 +443,24 @@
                     codigoPostal: zip,
                     observaciones: document.getElementById('orderNotes').value,
                     servicio: summaryService.innerText,
-                    precio: totalPrice.innerText,
+                    precio: totalPrice.innerText + "€",
                     totalHojas: totalHojas,
                     archivos: processedFiles
                 };
 
-                // Petición optimizada para Google Apps Script
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify(orderData)
-                }).catch(err => {
-                    // Ignoramos errores de CORS si el script no devuelve cabeceras, 
-                    // ya que el dato suele llegar igualmente al servidor de Google.
-                    console.log("Petición enviada (CORS bypass check)");
-                });
+                }).catch(err => console.log("CORS ignore: Data sent."));
 
-                alert("¡Pedido enviado correctamente! Revisa tu email (incluyendo Spam) y te contactaremos por WhatsApp.");
+                alert("¡Pedido enviado correctamente! Revisaremos tus archivos y te contactaremos por WhatsApp.");
                 document.getElementById('orderForm').reset();
                 selectedFiles = [];
                 isPackSelected = false;
                 updateUI();
             } catch (error) {
                 console.error(error);
-                alert("Hubo un problema al procesar los archivos. Por favor, intenta de nuevo.");
+                alert("Hubo un error al procesar tu pedido. Por favor verifica los archivos.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
