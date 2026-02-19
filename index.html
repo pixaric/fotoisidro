@@ -120,7 +120,7 @@
                         <h3 class="text-xl font-bold mb-8">Resumen</h3>
                         <div class="space-y-4 mb-10 text-sm">
                             <div class="flex justify-between border-b border-blue-400/30 pb-2"><span>Servicio:</span><span id="summaryService" class="font-semibold">-</span></div>
-                            <div class="flex justify-between border-b border-blue-400/30 pb-2"><span id="countLabel">Archivos:</span><span id="summaryFiles" class="font-semibold">0</span></div>
+                            <div class="flex justify-between border-b border-blue-400/30 pb-2"><span id="countLabel">Total Hojas:</span><span id="summaryFiles" class="font-semibold">0</span></div>
                         </div>
                         <div class="mb-8">
                             <div class="text-blue-100 mb-1">Total Estimado</div>
@@ -136,7 +136,7 @@
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2VPnLIIENwS56Gxg_b1LmjH0OEjcbFHRtH08TcBHW16UbYjfFV7x1XUlHaafqr5ID/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOzrECO1lFo-93Ao7_fEc25gMAOgxjqQEy8KpgFvqgfR60csjqFomiyi1-8PZauRqO/exec";
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -236,7 +236,6 @@
             document.getElementById('minFilesText').innerText = `Mínimo ${requiredMinFiles} unidades requeridas.`;
         }
 
-        // Función para convertir archivo a Base64 para el Google Apps Script
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -253,14 +252,14 @@
             submitBtn.classList.add('loading');
 
             try {
-                // Convertir todos los archivos a base64 antes de enviar
+                const totalHojas = selectedFiles.reduce((sum, item) => sum + item.pages, 0);
                 const processedFiles = await Promise.all(selectedFiles.map(async (f) => ({
                     name: f.file.name,
                     type: f.file.type,
+                    pages: f.pages,
                     data: await toBase64(f.file)
                 })));
 
-                // Objeto ajustado exactamente a tu Google Apps Script
                 const orderData = {
                     nombre: document.getElementById('customerName').value,
                     telefono: document.getElementById('customerPhone').value,
@@ -270,6 +269,7 @@
                     observaciones: document.getElementById('orderNotes').value,
                     servicio: summaryService.innerText,
                     precio: totalPrice.innerText,
+                    totalHojas: totalHojas,
                     archivos: processedFiles
                 };
 
@@ -280,7 +280,7 @@
                     body: JSON.stringify(orderData)
                 });
 
-                alert("¡Pedido enviado correctamente! Recibirás un correo de confirmación y te contactaremos por WhatsApp.");
+                alert("¡Pedido enviado correctamente! Revisa tu email (incluyendo Spam) y te contactaremos por WhatsApp.");
                 document.getElementById('orderForm').reset();
                 selectedFiles = [];
                 isPackSelected = false;
