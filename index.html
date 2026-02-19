@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FotoIsidro - Impresión Express a Domicilio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .gradient-brand {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        }
+
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item[open] summary i {
+            transform: rotate(180deg);
+        }
+        
+        summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="gradient-brand p-2 rounded-lg text-white">
+                    <i class="fas fa-camera-retro fa-lg"></i>
+                </div>
+                <span class="text-2xl font-bold text-slate-800 tracking-tight">FotoIsidro</span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-slate-600 font-medium">
+                <a href="#packs" class="hover:text-blue-600 transition">Packs</a>
+                <a href="#ordenar" class="hover:text-blue-600 transition">Pedir ahora</a>
+                <a href="#faq" class="hover:text-blue-600 transition">Dudas</a>
+            </nav>
+            <a href="#ordenar" class="gradient-brand text-white px-5 py-2 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-md shadow-blue-200">
+                ENVÍO EXPRESS
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-slate-900 text-white py-24 overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">Tus fotos impresas en <span class="text-blue-400">San Isidro</span></h1>
+            <p class="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
+                Impresión de alta calidad y entrega a domicilio express. Guardamos tus archivos en Google Drive para garantizar la máxima resolución.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex items-center bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-700">
+                    <i class="fas fa-truck text-blue-400 mr-2"></i>
+                    <span>Entrega en 24h</span>
+                </div>
+                <div class="flex items-center bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-700">
+                    <i class="fas fa-check-circle text-blue-400 mr-2"></i>
+                    <span>Calidad Profesional</span>
+                </div>
+            </div>
+        </div>
+        <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
+    </section>
+
+    <!-- Packs Section -->
+    <section id="packs" class="py-16 container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Packs Recomendados</h2>
+            <p class="text-slate-500">Impresión local de confianza</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-slate-800">
+            <!-- Pack 1 -->
+            <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col transition-transform hover:-translate-y-1">
+                <span class="text-blue-600 font-bold text-sm uppercase mb-4 tracking-wider">El Popular</span>
+                <h3 class="text-2xl font-bold mb-2">Pack 20 Fotos</h3>
+                <p class="text-slate-500 mb-6 italic">10x15cm (Estándar)</p>
+                <div class="text-4xl font-bold mb-6">9.99€</div>
+                <ul class="text-slate-600 space-y-3 mb-8 text-left mx-auto">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Papel Premium</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Brillo o Mate</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Envío Gratis</li>
+                </ul>
+                <button onclick="selectPack('Pack 20 Fotos', 9.99)" class="mt-auto bg-slate-100 text-slate-800 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Seleccionar</button>
+            </div>
+
+            <!-- Pack 2 -->
+            <div class="bg-white p-8 rounded-2xl card-shadow border-2 border-blue-500 text-center relative flex flex-col scale-105 z-10 shadow-2xl">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Más pedido</div>
+                <span class="text-blue-600 font-bold text-sm uppercase mb-4 tracking-wider">Gran Formato</span>
+                <h3 class="text-2xl font-bold mb-2">Pack Decoración</h3>
+                <p class="text-slate-500 mb-6 italic">Varios tamaños</p>
+                <div class="text-4xl font-bold mb-6">19.90€</div>
+                <ul class="text-slate-600 space-y-3 mb-8 text-left mx-auto">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Calidad Galería</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Revisión Manual</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Entrega 12h</li>
+                </ul>
+                <button onclick="selectPack('Pack Decoración', 19.90)" class="mt-auto gradient-brand text-white py-3 rounded-xl font-bold hover:opacity-90 transition shadow-lg">Seleccionar</button>
+            </div>
+
+            <!-- Pack 3 -->
+            <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col transition-transform hover:-translate-y-1">
+                <span class="text-blue-600 font-bold text-sm uppercase mb-4 tracking-wider">Documentos</span>
+                <h3 class="text-2xl font-bold mb-2">Pack Oficina</h3>
+                <p class="text-slate-500 mb-6 italic">50 Impresiones A4</p>
+                <div class="text-4xl font-bold mb-6">12.50€</div>
+                <ul class="text-slate-600 space-y-3 mb-8 text-left mx-auto">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Alta blancura</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Ideal PDFs</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i> Carpeta Gratis</li>
+                </ul>
+                <button onclick="selectPack('Pack Oficina', 12.50)" class="mt-auto bg-slate-100 text-slate-800 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Seleccionar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Form Section -->
+    <section id="ordenar" class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+                <!-- Left Side: Form -->
+                <div class="p-8 md:w-3/5">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Configura tu Pedido</h2>
+                    
+                    <form id="orderForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">¿Qué quieres imprimir?</label>
+                            <select id="serviceType" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-700">
+                                <option value="fotos">Fotos Digitales</option>
+                                <option value="documentos">Documentos / PDFs</option>
+                                <option value="combinado">Pack Especial (Seleccionado arriba)</option>
+                            </select>
+                        </div>
+
+                        <!-- Drop Zone -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Archivos (Se guardarán en nuestro Drive privado)</label>
+                            <div id="dropZone" class="drop-zone rounded-2xl p-8 text-center cursor-pointer hover:bg-slate-50 transition">
+                                <input type="file" id="fileInput" multiple class="hidden" accept="image/*,.pdf">
+                                <div id="dropContent">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-blue-400 mb-4"></i>
+                                    <p class="text-slate-600 font-medium text-sm">Arrastra tus archivos o haz clic</p>
+                                    <p class="text-slate-400 text-xs mt-1">Directo a Drive sin pérdida de resolución</p>
+                                </div>
+                                <div id="fileList" class="mt-4 text-left space-y-2 hidden max-h-48 overflow-y-auto pr-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2 text-slate-800">Nombre</label>
+                                <input id="customerName" type="text" required placeholder="Tu nombre" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2 text-slate-800">Teléfono</label>
+                                <input id="customerPhone" type="tel" required placeholder="WhatsApp" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2 text-slate-800">Dirección de entrega</label>
+                            <input id="customerAddress" type="text" required placeholder="Calle, número y piso" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full gradient-brand text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-blue-300 transition-all flex justify-center items-center">
+                            <span>Confirmar y Enviar</span>
+                            <i class="fas fa-paper-plane ml-3"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Side: Summary & Payment -->
+                <div class="bg-blue-600 p-8 md:w-2/5 text-white flex flex-col">
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-bold mb-8">Resumen de Pedido</h3>
+                        <div class="space-y-4 mb-10">
+                            <div class="flex justify-between border-b border-blue-400/30 pb-2">
+                                <span class="text-blue-100">Servicio:</span>
+                                <span id="summaryService" class="font-semibold">Fotos Digitales</span>
+                            </div>
+                            <div class="flex justify-between border-b border-blue-400/30 pb-2">
+                                <span class="text-blue-100">Archivos:</span>
+                                <span id="summaryFiles" class="font-semibold">0 seleccionados</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <div class="text-blue-100 mb-1">Total Estimado</div>
+                            <div class="text-5xl font-bold" id="totalPrice">0.00€</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-6 border-t border-blue-500">
+                        <h4 class="text-sm font-bold uppercase mb-4 opacity-80">Métodos de Pago</h4>
+                        <div class="flex gap-4">
+                            <div class="bg-white/10 p-2 rounded-lg flex-1 text-center"><i class="fas fa-mobile-alt"></i><div class="text-[9px]">BIZUM</div></div>
+                            <div class="bg-white/10 p-2 rounded-lg flex-1 text-center"><i class="fas fa-coins"></i><div class="text-[9px]">EFECTIVO</div></div>
+                            <div class="bg-white/10 p-2 rounded-lg flex-1 text-center"><i class="fas fa-credit-card"></i><div class="text-[9px]">TARJETA</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16 container mx-auto px-4 max-w-3xl">
+        <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">Preguntas Frecuentes</h2>
+        <div class="space-y-4 text-slate-700">
+            <details class="bg-white rounded-2xl border p-4 cursor-pointer">
+                <summary class="font-bold flex justify-between items-center">¿A dónde van mis fotos? <i class="fas fa-chevron-down text-blue-500"></i></summary>
+                <p class="mt-4 text-sm">Se suben directamente a nuestra carpeta privada de Google Drive. Nadie más tiene acceso y las borramos una vez entregado el pedido.</p>
+            </details>
+            <details class="bg-white rounded-2xl border p-4 cursor-pointer">
+                <summary class="font-bold flex justify-between items-center">¿Puedo enviar archivos pesados? <i class="fas fa-chevron-down text-blue-500"></i></summary>
+                <p class="mt-4 text-sm">Sí, el sistema acepta fotos de alta resolución para que la impresión sea perfecta.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center">
+        <div class="flex justify-center items-center space-x-2 mb-4">
+            <i class="fas fa-camera-retro text-blue-500"></i>
+            <span class="text-xl font-bold text-white">FotoIsidro</span>
+        </div>
+        <p>© 2024 FotoIsidro - Especialistas en San Isidro</p>
+    </footer>
+
+    <script>
+        // --- CONFIGURACIÓN DRIVE ---
+        // URL ACTUALIZADA DE TU GOOGLE APPS SCRIPT
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBoMRSfR3_q7L00kheQ4m7h-6a19SeKc6hYRBWlE8NHb5aZuC_JcEdQgHOrwyyRai2/exec";
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const summaryService = document.getElementById('summaryService');
+        const summaryFiles = document.getElementById('summaryFiles');
+        const totalPrice = document.getElementById('totalPrice');
+        const orderForm = document.getElementById('orderForm');
+
+        let selectedFiles = [];
+
+        function selectPack(name, price) {
+            document.getElementById('serviceType').value = "combinado";
+            summaryService.innerText = name;
+            totalPrice.innerText = price.toFixed(2) + '€';
+            document.getElementById('ordenar').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        dropZone.onclick = () => fileInput.click();
+        fileInput.onchange = (e) => handleFiles(e.target.files);
+
+        function handleFiles(files) {
+            selectedFiles = [...selectedFiles, ...Array.from(files)];
+            updateUI();
+        }
+
+        function removeFile(index) {
+            event.stopPropagation();
+            selectedFiles.splice(index, 1);
+            updateUI();
+        }
+
+        function updateUI() {
+            fileList.innerHTML = selectedFiles.map((f, i) => `
+                <div class="flex justify-between bg-slate-50 p-2 rounded border text-xs text-slate-800">
+                    <span class="truncate">${f.name}</span>
+                    <button type="button" onclick="removeFile(${i})" class="text-red-400"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+            fileList.classList.toggle('hidden', selectedFiles.length === 0);
+            document.getElementById('dropContent').classList.toggle('hidden', selectedFiles.length > 0);
+            summaryFiles.innerText = selectedFiles.length + " archivos";
+            
+            if (document.getElementById('serviceType').value !== "combinado") {
+                let unit = document.getElementById('serviceType').value === "fotos" ? 0.50 : 0.25;
+                totalPrice.innerText = (selectedFiles.length * unit).toFixed(2) + "€";
+            }
+        }
+
+        // --- ENVÍO REAL A DRIVE ---
+        orderForm.onsubmit = async (e) => {
+            e.preventDefault();
+            if (selectedFiles.length === 0) return alert("Sube archivos primero");
+            
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo a Drive...';
+
+            try {
+                // Convertir archivos a Base64 para enviarlos
+                const filePromises = selectedFiles.map(file => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve({
+                            name: file.name,
+                            type: file.type,
+                            data: e.target.result
+                        });
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                const archivosBase64 = await Promise.all(filePromises);
+
+                const payload = {
+                    nombre: document.getElementById('customerName').value,
+                    telefono: document.getElementById('customerPhone').value,
+                    direccion: document.getElementById('customerAddress').value,
+                    servicio: summaryService.innerText,
+                    archivos: archivosBase64
+                };
+
+                // Enviamos los datos al script de Google
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    cache: 'no-cache',
+                    body: JSON.stringify(payload)
+                });
+
+                // Notificación de éxito
+                alert("¡Pedido enviado correctamente! Los archivos ya se están guardando en tu Drive. Te contactaremos pronto por WhatsApp.");
+                orderForm.reset();
+                selectedFiles = [];
+                updateUI();
+            } catch (err) {
+                console.error(err);
+                alert("Hubo un error al conectar con Google Drive. Por favor, inténtalo de nuevo.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>Confirmar y Enviar</span><i class="fas fa-paper-plane ml-3"></i>';
+            }
+        };
+    </script>
+</body>
+</html>
