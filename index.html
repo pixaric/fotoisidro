@@ -6,202 +6,107 @@
     <title>FotoIsidro - Impresión Express a Domicilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Librería para contar páginas de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
-            scroll-behavior: smooth;
-        }
-
-        .gradient-brand {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-        }
-
-        .drop-zone {
-            border: 2px dashed #cbd5e1;
-            transition: all 0.3s ease;
-        }
-
-        .drop-zone.active {
-            border-color: #3b82f6;
-            background-color: #eff6ff;
-        }
-
-        .drop-zone.disabled {
-            background-color: #f1f5f9;
-            cursor: not-allowed;
-            opacity: 0.7;
-            border-color: #e2e8f0;
-        }
-
-        .card-shadow {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .disabled-btn {
-            opacity: 0.6;
-            cursor: not-allowed;
-            filter: grayscale(1);
-        }
-
-        /* Estilos para el estado de carga */
-        .loading-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        button.loading .loading-spinner {
-            display: inline-block;
-        }
-
-        button.loading .btn-content {
-            display: none;
-        }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+        .gradient-brand { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); }
+        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.3s ease; }
+        .drop-zone.active { border-color: #3b82f6; background-color: #eff6ff; }
+        .drop-zone.disabled { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.7; border-color: #e2e8f0; }
+        .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .disabled-btn { opacity: 0.6; cursor: not-allowed; filter: grayscale(1); }
+        .loading-spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        button.loading .loading-spinner { display: inline-block; }
+        button.loading .btn-content { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                <div class="gradient-brand p-2 rounded-lg text-white">
-                    <i class="fas fa-camera-retro fa-lg"></i>
-                </div>
+                <div class="gradient-brand p-2 rounded-lg text-white"><i class="fas fa-camera-retro fa-lg"></i></div>
                 <span class="text-2xl font-bold text-slate-800 tracking-tight">FotoIsidro</span>
             </div>
             <nav class="hidden md:flex space-x-8 text-slate-600 font-medium">
                 <a href="#packs" class="hover:text-blue-600 transition">Packs</a>
                 <a href="#ordenar" class="hover:text-blue-600 transition">Pedir ahora</a>
             </nav>
-            <a href="#ordenar" class="gradient-brand text-white px-5 py-2 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-md shadow-blue-200">
-                ENVÍO EXPRESS
-            </a>
+            <a href="#ordenar" class="gradient-brand text-white px-5 py-2 rounded-full font-semibold text-sm hover:opacity-90 transition shadow-md shadow-blue-200">ENVÍO EXPRESS</a>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="relative bg-slate-900 text-white py-24 overflow-hidden">
         <div class="container mx-auto px-4 relative z-10 text-center">
             <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">Tus fotos impresas en <span class="text-blue-400">San Isidro</span></h1>
-            <p class="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
-                Impresión de alta calidad y entrega a domicilio express. Guardamos tus archivos para garantizar la máxima resolución.
-            </p>
+            <p class="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">Impresión de alta calidad y entrega a domicilio express. Guardamos tus archivos para garantizar la máxima resolución.</p>
         </div>
-        <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
     </section>
 
-    <!-- Packs Section -->
     <section id="packs" class="py-16 container mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-slate-800 mb-2">Packs Recomendados</h2>
-            <p class="text-slate-500">Impresión local de confianza</p>
-        </div>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-slate-800">
-            <!-- Pack 1 -->
             <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col transition-transform hover:-translate-y-1">
-                <span class="text-blue-600 font-bold text-sm uppercase mb-4 tracking-wider">El Popular</span>
                 <h3 class="text-2xl font-bold mb-2">Pack 20 Fotos</h3>
                 <p class="text-slate-500 mb-6 italic">10x15cm (Extras +0.29€/u)</p>
                 <div class="text-4xl font-bold mb-6">9.99€</div>
-                <ul class="text-slate-600 space-y-3 mb-8 text-left mx-auto">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i> Papel Premium</li>
-                    <li><i class="fas fa-image text-blue-500 mr-2"></i> Mínimo 20 fotos</li>
-                </ul>
                 <button onclick="selectPack('Pack 20 Fotos', 9.99, 'fotos', 20)" class="mt-auto bg-slate-100 text-slate-800 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Seleccionar</button>
             </div>
-
-            <!-- Pack 2 -->
             <div class="bg-white p-8 rounded-2xl card-shadow border-2 border-blue-500 text-center relative flex flex-col scale-105 z-10 shadow-2xl">
                 <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Más pedido</div>
-                <span class="text-blue-600 font-bold text-sm uppercase mb-4 tracking-wider">Gran Formato</span>
                 <h3 class="text-2xl font-bold mb-2">Pack 2 Fotos A4</h3>
                 <p class="text-slate-500 mb-6 italic">8.99€ (Extras +3.89€/u)</p>
                 <div class="text-4xl font-bold mb-6">8.99€</div>
-                <ul class="text-slate-600 space-y-3 mb-8 text-left mx-auto">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i> Tamaño 21x29.7cm</li>
-                    <li><i class="fas fa-image text-blue-500 mr-2"></i> Mínimo 2 fotos</li>
-                </ul>
                 <button onclick="selectPack('Pack 2 Fotos A4', 8.99, 'gran-formato', 2)" class="mt-auto gradient-brand text-white py-3 rounded-xl font-bold hover:opacity-90 transition shadow-lg">Seleccionar</button>
             </div>
-
-            <!-- Pack 3 -->
             <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 text-center flex flex-col transition-transform hover:-translate-y-1">
-                <span class="text-blue-600 font-bold text-sm uppercase mb-4 tracking-wider">Documentos</span>
                 <h3 class="text-2xl font-bold mb-2">Pack Oficina</h3>
-                <p class="text-slate-500 mb-6 italic">Sin mínimo de hojas</p>
+                <p class="text-slate-500 mb-6 italic">Documentos PDF</p>
                 <div class="text-4xl font-bold mb-6">4.99€</div>
-                <ul class="text-slate-600 space-y-3 mb-8 text-left mx-auto">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i> Base: 4.99€ (hasta 5 hojas)</li>
-                    <li><i class="fas fa-file-pdf text-blue-500 mr-2"></i> Extra: 0.19€ / hoja</li>
-                </ul>
                 <button onclick="selectPack('Pack Oficina', 4.99, 'documentos', 0)" class="mt-auto bg-slate-100 text-slate-800 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Seleccionar</button>
             </div>
         </div>
     </section>
 
-    <!-- Order Form Section -->
     <section id="ordenar" class="py-16 bg-slate-50">
         <div class="container mx-auto px-4 max-w-4xl">
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-                <!-- Form -->
                 <div class="p-8 md:w-3/5">
                     <h2 class="text-2xl font-bold text-slate-800 mb-6">Configura tu Pedido</h2>
-                    
-                    <form id="orderForm" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">1. Selecciona tu Pack</label>
-                            <select id="serviceType" onchange="syncPackFromSelect();" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-700">
-                                <option value="" disabled selected>Escoge una opción...</option>
-                                <option value="fotos">Fotos Digitales (10x15cm)</option>
-                                <option value="gran-formato">Fotos A4 (Gran Formato)</option>
-                                <option value="documentos">Documentos / PDFs (Pack Oficina)</option>
-                            </select>
-                        </div>
+                    <form id="orderForm" class="space-y-4">
+                        <select id="serviceType" onchange="syncPackFromSelect();" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                            <option value="" disabled selected>Escoge un pack...</option>
+                            <option value="fotos">Fotos Digitales (10x15cm)</option>
+                            <option value="gran-formato">Fotos A4 (Gran Formato)</option>
+                            <option value="documentos">Documentos / PDFs (Pack Oficina)</option>
+                        </select>
 
-                        <!-- Drop Zone -->
-                        <div>
-                            <label id="uploadLabel" class="block text-sm font-semibold text-slate-400 mb-2">2. Sube tus archivos (Bloqueado)</label>
-                            <div id="dropZone" class="drop-zone disabled rounded-2xl p-8 text-center transition relative">
-                                <input type="file" id="fileInput" multiple class="hidden" disabled>
-                                <div id="dropContent">
-                                    <i class="fas fa-lock text-3xl text-slate-300 mb-4" id="lockIcon"></i>
-                                    <p class="text-slate-400 font-medium text-sm" id="dropText">Primero selecciona un pack arriba</p>
-                                    <p id="allowedFormatsHint" class="text-slate-400 text-xs mt-1 italic"></p>
-                                </div>
-                                <div id="fileList" class="mt-4 text-left space-y-2 hidden max-h-48 overflow-y-auto pr-2"></div>
+                        <div id="dropZone" class="drop-zone disabled rounded-2xl p-6 text-center transition relative">
+                            <input type="file" id="fileInput" multiple class="hidden" disabled>
+                            <div id="dropContent">
+                                <i class="fas fa-lock text-3xl text-slate-300 mb-2" id="lockIcon"></i>
+                                <p class="text-slate-400 font-medium text-sm" id="dropText">Primero selecciona un pack</p>
+                                <p id="allowedFormatsHint" class="text-slate-400 text-xs mt-1 italic"></p>
                             </div>
-                            <p id="minFilesNotice" class="hidden text-amber-600 text-xs mt-2 font-medium flex items-center">
-                                <i class="fas fa-info-circle mr-1"></i> 
-                                <span id="minFilesText"></span>
-                            </p>
+                            <div id="fileList" class="mt-4 text-left space-y-2 hidden max-h-48 overflow-y-auto pr-2"></div>
                         </div>
+                        <p id="minFilesNotice" class="hidden text-amber-600 text-xs font-medium"><i class="fas fa-info-circle mr-1"></i> <span id="minFilesText"></span></p>
 
-                        <!-- User Info -->
                         <div class="grid grid-cols-2 gap-4">
-                            <input id="customerName" type="text" required placeholder="Nombre" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
-                            <input id="customerPhone" type="tel" required placeholder="WhatsApp" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                            <input id="customerName" type="text" required placeholder="Nombre completo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <input id="customerPhone" type="tel" required placeholder="WhatsApp" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
+                        
+                        <input id="customerEmail" type="email" required placeholder="Correo electrónico" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <input id="customerAddress" type="text" required placeholder="Calle y número" class="md:col-span-2 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
-                            <input id="customerZip" type="text" required maxlength="5" placeholder="CP 38611" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                            <input id="customerAddress" type="text" required placeholder="Dirección" class="md:col-span-2 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <input id="customerZip" type="text" required maxlength="5" placeholder="CP 38611" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
-                        <p id="addressError" class="hidden text-red-500 text-xs mt-1">Solo repartimos en San Isidro (38611).</p>
+                        <p id="addressError" class="hidden text-red-500 text-xs">Solo repartimos en San Isidro (38611).</p>
+
+                        <textarea id="orderNotes" rows="2" placeholder="Observaciones (ej: bordes, brillo...)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
 
                         <button type="submit" id="submitBtn" class="w-full gradient-brand text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-blue-300 transition-all disabled-btn flex items-center justify-center space-x-2" disabled>
                             <span class="loading-spinner"></span>
@@ -210,30 +115,20 @@
                     </form>
                 </div>
 
-                <!-- Summary Panel -->
                 <div class="bg-blue-600 p-8 md:w-2/5 text-white flex flex-col">
                     <div class="flex-grow">
                         <h3 class="text-xl font-bold mb-8">Resumen</h3>
-                        <div class="space-y-4 mb-10">
-                            <div class="flex justify-between border-b border-blue-400/30 pb-2">
-                                <span class="text-blue-100">Servicio:</span>
-                                <span id="summaryService" class="font-semibold text-right">-</span>
-                            </div>
-                            <div class="flex justify-between border-b border-blue-400/30 pb-2">
-                                <span class="text-blue-100" id="countLabel">Archivos:</span>
-                                <span id="summaryFiles" class="font-semibold text-right">0</span>
-                            </div>
+                        <div class="space-y-4 mb-10 text-sm">
+                            <div class="flex justify-between border-b border-blue-400/30 pb-2"><span>Servicio:</span><span id="summaryService" class="font-semibold">-</span></div>
+                            <div class="flex justify-between border-b border-blue-400/30 pb-2"><span id="countLabel">Archivos:</span><span id="summaryFiles" class="font-semibold">0</span></div>
                         </div>
-
                         <div class="mb-8">
                             <div class="text-blue-100 mb-1">Total Estimado</div>
                             <div class="text-5xl font-bold" id="totalPrice">0.00€</div>
                             <p id="priceInfo" class="text-xs text-blue-200 mt-2 italic"></p>
                         </div>
                     </div>
-                    <div class="mt-auto pt-6 border-t border-blue-500 text-xs opacity-70">
-                        Pago al recibir (Bizum, efectivo o tarjeta).
-                    </div>
+                    <div class="mt-auto pt-6 border-t border-blue-500 text-xs opacity-70">Pago al recibir (Bizum, efectivo o tarjeta).</div>
                 </div>
             </div>
         </div>
@@ -241,8 +136,7 @@
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtHrh5AxzinM5N_T8jP9lYG7RFeGewxGjRHBFsCoXzMgnwOLXar_08o-C94FsWOqXh/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2VPnLIIENwS56Gxg_b1LmjH0OEjcbFHRtH08TcBHW16UbYjfFV7x1XUlHaafqr5ID/exec";
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -255,8 +149,6 @@
         const submitBtn = document.getElementById('submitBtn');
         const lockIcon = document.getElementById('lockIcon');
         const dropText = document.getElementById('dropText');
-        const uploadLabel = document.getElementById('uploadLabel');
-        const allowedFormatsHint = document.getElementById('allowedFormatsHint');
 
         let selectedFiles = [];
         let requiredMinFiles = 0;
@@ -270,56 +162,27 @@
         }
 
         function selectPack(name, price, type, min, scroll = true) {
-            if (isPackSelected && serviceType.value !== type) {
-                selectedFiles = [];
-            }
-
+            if (isPackSelected && serviceType.value !== type) selectedFiles = [];
             isPackSelected = true;
             serviceType.value = type;
             requiredMinFiles = min;
             summaryService.innerText = name;
-            
             dropZone.classList.remove('disabled');
             fileInput.disabled = false;
-            uploadLabel.classList.remove('text-slate-400');
-            uploadLabel.classList.add('text-slate-700');
-            uploadLabel.innerText = "2. Sube tus archivos";
-            lockIcon.className = "fas fa-cloud-upload-alt text-4xl text-blue-400 mb-4";
-            dropText.innerText = "Arrastra tus archivos o haz clic aquí";
-
-            if (type === 'documentos') {
-                fileInput.accept = ".pdf";
-                allowedFormatsHint.innerText = "Solo se permiten archivos PDF";
-            } else {
-                fileInput.accept = "image/*";
-                allowedFormatsHint.innerText = "Solo se permiten imágenes (JPG, PNG, etc.)";
-            }
-            
+            lockIcon.className = "fas fa-cloud-upload-alt text-3xl text-blue-400 mb-2";
+            dropText.innerText = "Arrastra o selecciona tus archivos";
+            fileInput.accept = type === 'documentos' ? ".pdf" : "image/*";
             updateUI();
-            
             if (scroll) document.getElementById('ordenar').scrollIntoView({ behavior: 'smooth' });
         }
 
-        dropZone.onclick = () => {
-            if (!isPackSelected) {
-                document.getElementById('packs').scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
-            fileInput.click();
-        };
+        dropZone.onclick = () => isPackSelected ? fileInput.click() : document.getElementById('packs').scrollIntoView({ behavior: 'smooth' });
 
         fileInput.onchange = async (e) => {
             const files = Array.from(e.target.files);
-            const type = serviceType.value;
-
             for (const file of files) {
-                if (type === 'documentos' && file.type !== "application/pdf") continue;
-                if ((type === 'fotos' || type === 'gran-formato') && !file.type.startsWith('image/')) continue;
-
                 let pages = 1;
-                if (file.type === "application/pdf") {
-                    pages = await countPdfPages(file);
-                }
+                if (file.type === "application/pdf") pages = await countPdfPages(file);
                 selectedFiles.push({ file, pages });
             }
             updateUI();
@@ -327,126 +190,104 @@
         };
 
         async function countPdfPages(file) {
-            try {
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                return pdf.numPages;
-            } catch (e) { return 1; }
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            return pdf.numPages;
         }
 
-        function removeFile(index) {
-            event.stopPropagation();
-            selectedFiles.splice(index, 1);
-            updateUI();
-        }
+        function removeFile(index) { event.stopPropagation(); selectedFiles.splice(index, 1); updateUI(); }
 
         function updateUI() {
             fileList.innerHTML = selectedFiles.map((item, i) => `
                 <div class="flex justify-between bg-slate-50 p-2 rounded border text-xs items-center">
                     <span class="truncate max-w-[150px] font-medium text-slate-700">${item.file.name}</span>
                     <div class="flex items-center space-x-2">
-                        <span class="bg-blue-100 text-blue-600 px-2 py-0.5 rounded font-bold">${item.pages} ${item.pages === 1 ? 'p.' : 'pp.'}</span>
-                        <button type="button" onclick="removeFile(${i})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-times"></i></button>
+                        <span class="bg-blue-100 text-blue-600 px-2 py-0.5 rounded font-bold">${item.pages} p.</span>
+                        <button type="button" onclick="removeFile(${i})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
             `).join('');
-            
             fileList.classList.toggle('hidden', selectedFiles.length === 0);
             document.getElementById('dropContent').classList.toggle('hidden', selectedFiles.length > 0);
             
             const totalItems = selectedFiles.length;
             const totalPages = selectedFiles.reduce((sum, item) => sum + item.pages, 0);
             const type = serviceType.value;
-
-            let total = 0;
-            let info = "";
-            let currentCount = 0;
+            let total = 0, currentCount = 0;
 
             if (type === "fotos") {
                 currentCount = totalItems;
                 total = totalItems <= 20 ? (totalItems > 0 ? 9.99 : 0) : 9.99 + ((totalItems - 20) * 0.29);
-                info = totalItems > 20 ? "Pack + fotos extra" : "Precio Pack 20 fotos";
-                document.getElementById('countLabel').innerText = "Fotos:";
             } else if (type === "gran-formato") {
                 currentCount = totalItems;
                 total = totalItems <= 2 ? (totalItems > 0 ? 8.99 : 0) : 8.99 + ((totalItems - 2) * 3.89);
-                info = totalItems > 2 ? "Pack + fotos A4 extra" : "Precio Pack 2 fotos A4";
-                document.getElementById('countLabel').innerText = "Fotos A4:";
             } else if (type === "documentos") {
                 currentCount = totalPages;
                 total = totalPages > 0 ? (totalPages <= 5 ? 4.99 : 4.99 + ((totalPages - 5) * 0.19)) : 0;
-                info = totalPages > 5 ? "Base oficina + hojas extra" : "Tarifa base oficina";
-                document.getElementById('countLabel').innerText = "Total Páginas:";
             }
 
             summaryFiles.innerText = currentCount;
             totalPrice.innerText = total.toFixed(2) + "€";
-            priceInfo.innerText = totalItems > 0 ? info : "";
-
+            
             const isMinMet = requiredMinFiles === 0 || currentCount >= requiredMinFiles;
-            if (isPackSelected && selectedFiles.length > 0 && isMinMet) {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('disabled-btn');
-                document.getElementById('minFilesNotice').classList.add('hidden');
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.classList.add('disabled-btn');
-                if (isPackSelected && selectedFiles.length > 0 && !isMinMet) {
-                    document.getElementById('minFilesNotice').classList.remove('hidden');
-                    document.getElementById('minFilesText').innerText = `Este pack requiere un mínimo de ${requiredMinFiles} unidades.`;
-                } else {
-                    document.getElementById('minFilesNotice').classList.add('hidden');
-                }
-            }
+            submitBtn.disabled = !(isPackSelected && selectedFiles.length > 0 && isMinMet);
+            submitBtn.classList.toggle('disabled-btn', submitBtn.disabled);
+            document.getElementById('minFilesNotice').classList.toggle('hidden', isMinMet || selectedFiles.length === 0);
+            document.getElementById('minFilesText').innerText = `Mínimo ${requiredMinFiles} unidades requeridas.`;
         }
+
+        // Función para convertir archivo a Base64 para el Google Apps Script
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
 
         document.getElementById('orderForm').onsubmit = async (e) => {
             e.preventDefault();
-            
             const zip = document.getElementById('customerZip').value;
-            if (zip !== "38611") {
-                document.getElementById('addressError').classList.remove('hidden');
-                return;
-            }
+            if (zip !== "38611") { document.getElementById('addressError').classList.remove('hidden'); return; }
 
-            // Iniciar estado de carga
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
 
-            const orderData = {
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                address: document.getElementById('customerAddress').value,
-                zip: zip,
-                service: summaryService.innerText,
-                quantity: summaryFiles.innerText,
-                total: totalPrice.innerText,
-                date: new Date().toLocaleString(),
-                files: selectedFiles.map(f => f.file.name).join(', ')
-            };
-
             try {
-                // Envío de datos al Google Apps Script
+                // Convertir todos los archivos a base64 antes de enviar
+                const processedFiles = await Promise.all(selectedFiles.map(async (f) => ({
+                    name: f.file.name,
+                    type: f.file.type,
+                    data: await toBase64(f.file)
+                })));
+
+                // Objeto ajustado exactamente a tu Google Apps Script
+                const orderData = {
+                    nombre: document.getElementById('customerName').value,
+                    telefono: document.getElementById('customerPhone').value,
+                    email: document.getElementById('customerEmail').value,
+                    direccion: document.getElementById('customerAddress').value,
+                    codigoPostal: zip,
+                    observaciones: document.getElementById('orderNotes').value,
+                    servicio: summaryService.innerText,
+                    precio: totalPrice.innerText,
+                    archivos: processedFiles
+                };
+
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Modo necesario para evitar errores de redirección de GAS
+                    mode: 'no-cors',
                     cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(orderData)
                 });
 
-                // Simular éxito y avisar al usuario
-                alert("¡Pedido enviado correctamente! Nos pondremos en contacto contigo por WhatsApp en breve.");
-                
-                // Reiniciar formulario
+                alert("¡Pedido enviado correctamente! Recibirás un correo de confirmación y te contactaremos por WhatsApp.");
                 document.getElementById('orderForm').reset();
                 selectedFiles = [];
                 isPackSelected = false;
                 updateUI();
-                
             } catch (error) {
-                console.error("Error al enviar pedido:", error);
-                alert("Hubo un error al procesar tu pedido. Por favor, inténtalo de nuevo o contáctanos por WhatsApp.");
+                console.error(error);
+                alert("Error al enviar el pedido. Inténtalo de nuevo.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
