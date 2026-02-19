@@ -181,10 +181,21 @@
                             </div>
                         </div>
 
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Dirección de entrega</label>
+                                <input id="customerAddress" type="text" required placeholder="Calle y número" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Código Postal</label>
+                                <input id="customerZip" type="text" required maxlength="5" placeholder="38611" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
+                            </div>
+                        </div>
+                        <p id="addressError" class="hidden text-red-500 text-xs mt-1"><i class="fas fa-exclamation-circle mr-1"></i> Lo sentimos, solo repartimos en San Isidro de Abona (CP 38611).</p>
+
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-2">Dirección de entrega (Solo San Isidro de Abona)</label>
-                            <input id="customerAddress" type="text" required placeholder="Calle, número y CP (38611)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800">
-                            <p id="addressError" class="hidden text-red-500 text-xs mt-1"><i class="fas fa-exclamation-circle mr-1"></i> Lo sentimos, solo repartimos en San Isidro de Abona.</p>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Observaciones adicionales</label>
+                            <textarea id="customerNotes" rows="3" placeholder="¿Alguna indicación para la entrega o la impresión?" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800 resize-none"></textarea>
                         </div>
 
                         <button type="submit" id="submitBtn" class="w-full gradient-brand text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-blue-300 transition-all flex justify-center items-center">
@@ -254,7 +265,7 @@
 
     <script>
         // --- CONFIGURACIÓN DRIVE ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyWr4sm0N0TvE9j1b4hPgsC2enSiNhH-WOcKr0OSOTya_348mZEcKhAh9MpUk85TGKR/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBoMRSfR3_q7L00kheQ4m7h-6a19SeKc6hYRBWlE8NHb5aZuC_JcEdQgHOrwyyRai2/exec";
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -264,6 +275,7 @@
         const totalPrice = document.getElementById('totalPrice');
         const orderForm = document.getElementById('orderForm');
         const customerAddress = document.getElementById('customerAddress');
+        const customerZip = document.getElementById('customerZip');
         const addressError = document.getElementById('addressError');
 
         let selectedFiles = [];
@@ -307,26 +319,30 @@
         }
 
         // Validador de zona geográfica (San Isidro de Abona / CP 38611)
-        function isSanIsidroAddress(address) {
-            const normalized = address.toLowerCase();
-            return normalized.includes("san isidro") || normalized.includes("38611");
+        function isSanIsidroAddress() {
+            const zip = customerZip.value.trim();
+            // Validamos estrictamente que sea el CP 38611
+            return zip === "38611";
         }
 
         orderForm.onsubmit = async (e) => {
             e.preventDefault();
             
-            // Validar dirección
-            if (!isSanIsidroAddress(customerAddress.value)) {
+            // Validar Código Postal (Principalmente)
+            if (!isSanIsidroAddress()) {
                 addressError.classList.remove('hidden');
-                customerAddress.classList.add('border-red-500');
-                customerAddress.focus();
+                customerZip.classList.add('ring-2', 'ring-red-500');
+                customerZip.focus();
                 return;
             } else {
                 addressError.classList.add('hidden');
-                customerAddress.classList.remove('border-red-500');
+                customerZip.classList.remove('ring-2', 'ring-red-500');
             }
 
-            if (selectedFiles.length === 0) return alert("Por favor, selecciona archivos primero.");
+            if (selectedFiles.length === 0) {
+                alert("Por favor, selecciona archivos primero.");
+                return;
+            }
             
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
@@ -336,10 +352,10 @@
                 const filePromises = selectedFiles.map(file => {
                     return new Promise((resolve, reject) => {
                         const reader = new FileReader();
-                        reader.onload = (e) => resolve({
+                        reader.onload = (ev) => resolve({
                             name: file.name,
                             type: file.type,
-                            data: e.target.result 
+                            data: ev.target.result 
                         });
                         reader.onerror = reject;
                         reader.readAsDataURL(file);
@@ -348,10 +364,13 @@
 
                 const archivosData = await Promise.all(filePromises);
 
+                // Payload actualizado con los nuevos campos
                 const payload = {
                     nombre: document.getElementById('customerName').value,
                     telefono: document.getElementById('customerPhone').value,
                     direccion: document.getElementById('customerAddress').value,
+                    codigoPostal: customerZip.value,
+                    observaciones: document.getElementById('customerNotes').value,
                     servicio: summaryService.innerText,
                     precio: totalPrice.innerText,
                     archivos: archivosData
@@ -363,24 +382,35 @@
                 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
-                        alert("¡Pedido enviado con éxito! Los datos y archivos se han guardado en nuestro sistema.");
-                        orderForm.reset();
-                        selectedFiles = [];
-                        updateUI();
+                        if (xhr.status === 200) {
+                            alert("¡Pedido enviado con éxito! Los datos y archivos se han guardado en nuestro sistema.");
+                            orderForm.reset();
+                            selectedFiles = [];
+                            updateUI();
+                        } else {
+                            alert("Hubo un problema al conectar con el servidor. Inténtalo de nuevo.");
+                        }
                         btn.disabled = false;
                         btn.innerHTML = '<span>Confirmar y Enviar</span><i class="fas fa-paper-plane ml-3"></i>';
                     }
                 };
 
+                // Enviamos como JSON stringificado
                 xhr.send(JSON.stringify(payload));
 
             } catch (err) {
                 console.error("Error al enviar:", err);
-                alert("Error al procesar el pedido.");
+                alert("Error técnico al procesar el pedido. Por favor, revisa tu conexión.");
                 btn.disabled = false;
                 btn.innerHTML = '<span>Confirmar y Enviar</span><i class="fas fa-paper-plane ml-3"></i>';
             }
         };
+
+        // Reset del error al escribir
+        customerZip.addEventListener('input', () => {
+            addressError.classList.add('hidden');
+            customerZip.classList.remove('ring-2', 'ring-red-500');
+        });
     </script>
 </body>
 </html>
